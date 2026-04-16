@@ -463,6 +463,87 @@
     .class-W { background: #f0fdf4; color: #16a34a; }
     .class-VW { background: #ecfdf5; color: #059669; }
 
+    /* ===== Registration form ===== */
+    .reg-tabs {
+      display: flex;
+      gap: .25rem;
+      margin-bottom: 1rem;
+    }
+    .reg-form .input-row {
+      flex-wrap: wrap;
+    }
+    .reg-form .form-group { min-width: 140px; }
+    .reg-input {
+      width: 100%;
+      padding: .55rem .75rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 8px;
+      font-size: .9rem;
+      color: var(--gray-800);
+      background: white;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .reg-input:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, .15);
+    }
+    .btn-register {
+      margin-top: 1rem;
+      background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+      color: white;
+      font-size: .9rem;
+      padding: .7rem 1.5rem;
+      box-shadow: 0 2px 8px rgba(14, 165, 233, .3);
+    }
+    .btn-register:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(14, 165, 233, .4);
+    }
+    .reg-message {
+      margin-top: 1rem;
+      padding: .6rem 1rem;
+      border-radius: 8px;
+      font-size: .85rem;
+      font-weight: 600;
+      display: none;
+    }
+    .reg-message.show { display: block; animation: slideUp .3s ease; }
+    .reg-message.success {
+      background: #f0fdf4;
+      color: #16a34a;
+      border: 1px solid #bbf7d0;
+    }
+    .reg-message.error {
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+    }
+    .custom-badge {
+      display: inline-block;
+      padding: .1rem .4rem;
+      background: #dbeafe;
+      color: #1e40af;
+      border-radius: 10px;
+      font-size: .65rem;
+      font-weight: 700;
+      margin-left: .3rem;
+    }
+    .delete-btn {
+      background: none;
+      border: none;
+      color: var(--gray-400);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: .2rem .4rem;
+      border-radius: 4px;
+      transition: all .2s;
+    }
+    .delete-btn:hover {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+
     /* ===== Induction section ===== */
     .induction-note {
       background: #eff6ff;
@@ -852,6 +933,43 @@
     <div class="matrix-legend" id="matrix-legend"></div>
   </div>
 
+  <!-- ===== Drug Registration ===== -->
+  <div class="card">
+    <div class="card-title"><span class="icon">&#x2795;</span> 薬物を登録</div>
+    <div class="reg-tabs">
+      <button class="db-tab active" data-regtab="substrate" onclick="switchRegTab('substrate')">基質薬 (CR)</button>
+      <button class="db-tab" data-regtab="inhibitor" onclick="switchRegTab('inhibitor')">阻害薬 (IR)</button>
+      <button class="db-tab" data-regtab="inducer" onclick="switchRegTab('inducer')">誘導薬 (IC)</button>
+    </div>
+    <div class="reg-form" id="reg-form-substrate">
+      <div class="input-row">
+        <div class="form-group"><label class="form-label">薬物名（日本語）</label><input type="text" id="reg-sub-ja" placeholder="例: ボルズィ" class="reg-input"></div>
+        <div class="form-group"><label class="form-label">英名</label><input type="text" id="reg-sub-en" placeholder="例: Voruzi" class="reg-input"></div>
+        <div class="form-group"><label class="form-label">CR値</label><input type="number" id="reg-sub-cr" step="0.01" min="0" max="1" placeholder="0.00 - 1.00" class="reg-input"></div>
+      </div>
+      <button class="btn btn-register" onclick="registerDrug('substrate')">&#x2795; 基質薬として登録</button>
+    </div>
+    <div class="reg-form" id="reg-form-inhibitor" style="display:none;">
+      <div class="input-row">
+        <div class="form-group"><label class="form-label">薬物名（日本語）</label><input type="text" id="reg-inh-ja" placeholder="例: ボルズィ" class="reg-input"></div>
+        <div class="form-group"><label class="form-label">英名</label><input type="text" id="reg-inh-en" placeholder="例: Voruzi" class="reg-input"></div>
+        <div class="form-group"><label class="form-label">IR値</label><input type="number" id="reg-inh-ir" step="0.01" min="0" max="1" placeholder="0.00 - 1.00" class="reg-input"></div>
+        <div class="form-group"><label class="form-label">用量</label><input type="text" id="reg-inh-dose" placeholder="例: 200mg" class="reg-input"></div>
+      </div>
+      <button class="btn btn-register" onclick="registerDrug('inhibitor')">&#x2795; 阻害薬として登録</button>
+    </div>
+    <div class="reg-form" id="reg-form-inducer" style="display:none;">
+      <div class="input-row">
+        <div class="form-group"><label class="form-label">薬物名（日本語）</label><input type="text" id="reg-ind-ja" placeholder="例: ボルズィ" class="reg-input"></div>
+        <div class="form-group"><label class="form-label">英名</label><input type="text" id="reg-ind-en" placeholder="例: Voruzi" class="reg-input"></div>
+        <div class="form-group"><label class="form-label">IC値</label><input type="number" id="reg-ind-ic" step="0.1" min="0" placeholder="例: 3.0" class="reg-input"></div>
+        <div class="form-group"><label class="form-label">用量</label><input type="text" id="reg-ind-dose" placeholder="例: 200mg/日" class="reg-input"></div>
+      </div>
+      <button class="btn btn-register" onclick="registerDrug('inducer')">&#x2795; 誘導薬として登録</button>
+    </div>
+    <div id="reg-message" class="reg-message"></div>
+  </div>
+
   <!-- ===== Drug Database ===== -->
   <div class="card">
     <div class="card-title"><span class="icon">&#x1f4ca;</span> 薬物データベース（CYP3A）</div>
@@ -1026,35 +1144,7 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
 // Populate dropdowns
 // ==========================================
 function populateDropdowns() {
-  const subSelects = ['inh-substrate-select', 'ir-substrate-select', 'ind-substrate-select'];
-  subSelects.forEach(id => {
-    const sel = document.getElementById(id);
-    DB.substrates.forEach((d, i) => {
-      const opt = document.createElement('option');
-      opt.value = i;
-      opt.textContent = `${d.name_ja} (${d.name_en}) - CR: ${d.cr.toFixed(2)}`;
-      sel.appendChild(opt);
-    });
-  });
-
-  const inhSelects = ['inh-inhibitor-select', 'cr-inhibitor-select'];
-  inhSelects.forEach(id => {
-    const sel = document.getElementById(id);
-    DB.inhibitors.forEach((d, i) => {
-      const opt = document.createElement('option');
-      opt.value = i;
-      opt.textContent = `${d.name_ja} (${d.name_en}) - IR: ${d.ir.toFixed(2)} [${d.dose}]`;
-      sel.appendChild(opt);
-    });
-  });
-
-  const indSel = document.getElementById('ind-inducer-select');
-  DB.inducers.forEach((d, i) => {
-    const opt = document.createElement('option');
-    opt.value = i;
-    opt.textContent = `${d.name_ja} (${d.name_en}) - IC: ${d.ic} [${d.dose}]`;
-    indSel.appendChild(opt);
-  });
+  refreshAllDropdowns();
 }
 
 function onSubstrateSelect(prefix) {
@@ -1284,39 +1374,49 @@ function switchDbTab(tab) {
 function renderDrugTable() {
   const table = document.getElementById('drug-table');
   let html = '';
+  const escapeHtml = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
   if (currentDbTab === 'substrates') {
-    html = `<thead><tr><th>#</th><th>薬物名</th><th>英名</th><th>CR</th><th>クラス</th></tr></thead><tbody>`;
+    html = `<thead><tr><th>#</th><th>薬物名</th><th>英名</th><th>CR</th><th>クラス</th><th></th></tr></thead><tbody>`;
     DB.substrates.forEach((d, i) => {
+      const badge = d.custom ? '<span class="custom-badge">登録</span>' : '';
+      const del = d.custom ? `<button class="delete-btn" title="削除" onclick="deleteCustomDrug('substrates', ${i})">&#x1f5d1;</button>` : '';
       html += `<tr>
         <td>${i + 1}</td>
-        <td>${d.name_ja}</td>
-        <td>${d.name_en}</td>
+        <td>${escapeHtml(d.name_ja)}${badge}</td>
+        <td>${escapeHtml(d.name_en)}</td>
         <td class="value-cell">${d.cr.toFixed(2)}</td>
         <td><span class="class-badge class-${d.cls}">${d.cls} (${getClass(d.cr).label})</span></td>
+        <td>${del}</td>
       </tr>`;
     });
   } else if (currentDbTab === 'inhibitors') {
-    html = `<thead><tr><th>#</th><th>薬物名</th><th>英名</th><th>IR</th><th>用量</th><th>クラス</th></tr></thead><tbody>`;
+    html = `<thead><tr><th>#</th><th>薬物名</th><th>英名</th><th>IR</th><th>用量</th><th>クラス</th><th></th></tr></thead><tbody>`;
     DB.inhibitors.forEach((d, i) => {
+      const badge = d.custom ? '<span class="custom-badge">登録</span>' : '';
+      const del = d.custom ? `<button class="delete-btn" title="削除" onclick="deleteCustomDrug('inhibitors', ${i})">&#x1f5d1;</button>` : '';
       html += `<tr>
         <td>${i + 1}</td>
-        <td>${d.name_ja}</td>
-        <td>${d.name_en}</td>
+        <td>${escapeHtml(d.name_ja)}${badge}</td>
+        <td>${escapeHtml(d.name_en)}</td>
         <td class="value-cell">${d.ir.toFixed(2)}</td>
-        <td>${d.dose}</td>
+        <td>${escapeHtml(d.dose)}</td>
         <td><span class="class-badge class-${d.cls}">${d.cls} (${getClass(d.ir).label})</span></td>
+        <td>${del}</td>
       </tr>`;
     });
   } else {
-    html = `<thead><tr><th>#</th><th>薬物名</th><th>英名</th><th>IC</th><th>用量</th></tr></thead><tbody>`;
+    html = `<thead><tr><th>#</th><th>薬物名</th><th>英名</th><th>IC</th><th>用量</th><th></th></tr></thead><tbody>`;
     DB.inducers.forEach((d, i) => {
+      const badge = d.custom ? '<span class="custom-badge">登録</span>' : '';
+      const del = d.custom ? `<button class="delete-btn" title="削除" onclick="deleteCustomDrug('inducers', ${i})">&#x1f5d1;</button>` : '';
       html += `<tr>
         <td>${i + 1}</td>
-        <td>${d.name_ja}</td>
-        <td>${d.name_en}</td>
+        <td>${escapeHtml(d.name_ja)}${badge}</td>
+        <td>${escapeHtml(d.name_en)}</td>
         <td class="value-cell">${d.ic}</td>
-        <td>${d.dose}</td>
+        <td>${escapeHtml(d.dose)}</td>
+        <td>${del}</td>
       </tr>`;
     });
   }
@@ -1325,8 +1425,155 @@ function renderDrugTable() {
 }
 
 // ==========================================
+// Custom Drug Registration (localStorage)
+// ==========================================
+const STORAGE_KEY = 'piscs_custom_drugs_v1';
+
+function loadCustomDrugs() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return;
+    const custom = JSON.parse(saved);
+    ['substrates', 'inhibitors', 'inducers'].forEach(type => {
+      if (Array.isArray(custom[type])) {
+        custom[type].forEach(d => {
+          d.custom = true;
+          DB[type].push(d);
+        });
+      }
+    });
+  } catch (e) { console.warn('Failed to load custom drugs:', e); }
+}
+
+function saveCustomDrugs() {
+  const custom = {
+    substrates: DB.substrates.filter(d => d.custom),
+    inhibitors: DB.inhibitors.filter(d => d.custom),
+    inducers: DB.inducers.filter(d => d.custom)
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(custom));
+}
+
+function switchRegTab(type) {
+  document.querySelectorAll('[data-regtab]').forEach(t => {
+    t.classList.toggle('active', t.dataset.regtab === type);
+  });
+  ['substrate', 'inhibitor', 'inducer'].forEach(t => {
+    document.getElementById('reg-form-' + t).style.display = (t === type) ? '' : 'none';
+  });
+  document.getElementById('reg-message').classList.remove('show');
+}
+
+function showRegMessage(msg, type) {
+  const el = document.getElementById('reg-message');
+  el.textContent = msg;
+  el.className = 'reg-message show ' + type;
+  setTimeout(() => el.classList.remove('show'), 4000);
+}
+
+function registerDrug(type) {
+  if (type === 'substrate') {
+    const ja = document.getElementById('reg-sub-ja').value.trim();
+    const en = document.getElementById('reg-sub-en').value.trim();
+    const cr = parseFloat(document.getElementById('reg-sub-cr').value);
+    if (!ja) { showRegMessage('薬物名（日本語）を入力してください', 'error'); return; }
+    if (isNaN(cr) || cr < 0 || cr > 1) { showRegMessage('CR値は 0〜1 の範囲で入力してください', 'error'); return; }
+    const cls = getClass(cr).key;
+    DB.substrates.push({ name_ja: ja, name_en: en || ja, cr, cls, custom: true });
+    document.getElementById('reg-sub-ja').value = '';
+    document.getElementById('reg-sub-en').value = '';
+    document.getElementById('reg-sub-cr').value = '';
+    showRegMessage(`基質薬「${ja}」(CR=${cr}) を登録しました`, 'success');
+  } else if (type === 'inhibitor') {
+    const ja = document.getElementById('reg-inh-ja').value.trim();
+    const en = document.getElementById('reg-inh-en').value.trim();
+    const ir = parseFloat(document.getElementById('reg-inh-ir').value);
+    const dose = document.getElementById('reg-inh-dose').value.trim() || '-';
+    if (!ja) { showRegMessage('薬物名（日本語）を入力してください', 'error'); return; }
+    if (isNaN(ir) || ir < 0 || ir > 1) { showRegMessage('IR値は 0〜1 の範囲で入力してください', 'error'); return; }
+    const cls = getClass(ir).key;
+    DB.inhibitors.push({ name_ja: ja, name_en: en || ja, ir, dose, cls, custom: true });
+    document.getElementById('reg-inh-ja').value = '';
+    document.getElementById('reg-inh-en').value = '';
+    document.getElementById('reg-inh-ir').value = '';
+    document.getElementById('reg-inh-dose').value = '';
+    showRegMessage(`阻害薬「${ja}」(IR=${ir}) を登録しました`, 'success');
+  } else if (type === 'inducer') {
+    const ja = document.getElementById('reg-ind-ja').value.trim();
+    const en = document.getElementById('reg-ind-en').value.trim();
+    const ic = parseFloat(document.getElementById('reg-ind-ic').value);
+    const dose = document.getElementById('reg-ind-dose').value.trim() || '-';
+    if (!ja) { showRegMessage('薬物名（日本語）を入力してください', 'error'); return; }
+    if (isNaN(ic) || ic < 0) { showRegMessage('IC値は 0以上の数値で入力してください', 'error'); return; }
+    DB.inducers.push({ name_ja: ja, name_en: en || ja, ic, dose, custom: true });
+    document.getElementById('reg-ind-ja').value = '';
+    document.getElementById('reg-ind-en').value = '';
+    document.getElementById('reg-ind-ic').value = '';
+    document.getElementById('reg-ind-dose').value = '';
+    showRegMessage(`誘導薬「${ja}」(IC=${ic}) を登録しました`, 'success');
+  }
+  saveCustomDrugs();
+  refreshAllDropdowns();
+  renderDrugTable();
+}
+
+function deleteCustomDrug(type, index) {
+  const list = DB[type];
+  const drug = list[index];
+  if (!drug || !drug.custom) return;
+  if (!confirm(`「${drug.name_ja}」を削除しますか？`)) return;
+  list.splice(index, 1);
+  saveCustomDrugs();
+  refreshAllDropdowns();
+  renderDrugTable();
+}
+
+function refreshAllDropdowns() {
+  // Clear and repopulate all selects
+  const subSelects = ['inh-substrate-select', 'ir-substrate-select', 'ind-substrate-select'];
+  subSelects.forEach(id => {
+    const sel = document.getElementById(id);
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">-- 選択してください --</option>';
+    DB.substrates.forEach((d, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${d.name_ja}${d.custom ? ' ★' : ''} (${d.name_en}) - CR: ${d.cr.toFixed(2)}`;
+      sel.appendChild(opt);
+    });
+    sel.value = cur;
+  });
+
+  const inhSelects = ['inh-inhibitor-select', 'cr-inhibitor-select'];
+  inhSelects.forEach(id => {
+    const sel = document.getElementById(id);
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">-- 選択してください --</option>';
+    DB.inhibitors.forEach((d, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${d.name_ja}${d.custom ? ' ★' : ''} (${d.name_en}) - IR: ${d.ir.toFixed(2)} [${d.dose}]`;
+      sel.appendChild(opt);
+    });
+    sel.value = cur;
+  });
+
+  const indSel = document.getElementById('ind-inducer-select');
+  const cur = indSel.value;
+  indSel.innerHTML = '<option value="">-- 選択してください --</option>';
+  DB.inducers.forEach((d, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${d.name_ja}${d.custom ? ' ★' : ''} (${d.name_en}) - IC: ${d.ic} [${d.dose}]`;
+    indSel.appendChild(opt);
+  });
+  indSel.value = cur;
+}
+
+// ==========================================
 // Init
 // ==========================================
+loadCustomDrugs();
 populateDropdowns();
 buildMatrix();
 renderDrugTable();
