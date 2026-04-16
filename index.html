@@ -943,26 +943,29 @@
     </div>
     <div class="reg-form" id="reg-form-substrate">
       <div class="input-row">
-        <div class="form-group"><label class="form-label">薬物名（日本語）</label><input type="text" id="reg-sub-ja" placeholder="例: ボルズィ" class="reg-input"></div>
+        <div class="form-group"><label class="form-label">一般名（日本語）<span class="form-hint">必須</span></label><input type="text" id="reg-sub-ja" placeholder="例: ボルズィ" class="reg-input"></div>
         <div class="form-group"><label class="form-label">英名</label><input type="text" id="reg-sub-en" placeholder="例: Voruzi" class="reg-input"></div>
-        <div class="form-group"><label class="form-label">CR値</label><input type="number" id="reg-sub-cr" step="0.01" min="0" max="1" placeholder="0.00 - 1.00" class="reg-input"></div>
+        <div class="form-group"><label class="form-label">商品名 <span class="form-hint">任意</span></label><input type="text" id="reg-sub-brand" placeholder="例: リピトール" class="reg-input"></div>
+        <div class="form-group"><label class="form-label">CR値 <span class="form-hint">必須</span></label><input type="number" id="reg-sub-cr" step="0.01" min="0" max="1" placeholder="0.00 - 1.00" class="reg-input"></div>
       </div>
       <button class="btn btn-register" onclick="registerDrug('substrate')">&#x2795; 基質薬として登録</button>
     </div>
     <div class="reg-form" id="reg-form-inhibitor" style="display:none;">
       <div class="input-row">
-        <div class="form-group"><label class="form-label">薬物名（日本語）</label><input type="text" id="reg-inh-ja" placeholder="例: ボルズィ" class="reg-input"></div>
+        <div class="form-group"><label class="form-label">一般名（日本語）<span class="form-hint">必須</span></label><input type="text" id="reg-inh-ja" placeholder="例: ボルズィ" class="reg-input"></div>
         <div class="form-group"><label class="form-label">英名</label><input type="text" id="reg-inh-en" placeholder="例: Voruzi" class="reg-input"></div>
-        <div class="form-group"><label class="form-label">IR値</label><input type="number" id="reg-inh-ir" step="0.01" min="0" max="1" placeholder="0.00 - 1.00" class="reg-input"></div>
+        <div class="form-group"><label class="form-label">商品名 <span class="form-hint">任意</span></label><input type="text" id="reg-inh-brand" placeholder="例: クラリス" class="reg-input"></div>
+        <div class="form-group"><label class="form-label">IR値 <span class="form-hint">必須</span></label><input type="number" id="reg-inh-ir" step="0.01" min="0" max="1" placeholder="0.00 - 1.00" class="reg-input"></div>
         <div class="form-group"><label class="form-label">用量</label><input type="text" id="reg-inh-dose" placeholder="例: 200mg" class="reg-input"></div>
       </div>
       <button class="btn btn-register" onclick="registerDrug('inhibitor')">&#x2795; 阻害薬として登録</button>
     </div>
     <div class="reg-form" id="reg-form-inducer" style="display:none;">
       <div class="input-row">
-        <div class="form-group"><label class="form-label">薬物名（日本語）</label><input type="text" id="reg-ind-ja" placeholder="例: ボルズィ" class="reg-input"></div>
+        <div class="form-group"><label class="form-label">一般名（日本語）<span class="form-hint">必須</span></label><input type="text" id="reg-ind-ja" placeholder="例: ボルズィ" class="reg-input"></div>
         <div class="form-group"><label class="form-label">英名</label><input type="text" id="reg-ind-en" placeholder="例: Voruzi" class="reg-input"></div>
-        <div class="form-group"><label class="form-label">IC値</label><input type="number" id="reg-ind-ic" step="0.1" min="0" placeholder="例: 3.0" class="reg-input"></div>
+        <div class="form-group"><label class="form-label">商品名 <span class="form-hint">任意</span></label><input type="text" id="reg-ind-brand" placeholder="例: リファジン" class="reg-input"></div>
+        <div class="form-group"><label class="form-label">IC値 <span class="form-hint">必須</span></label><input type="number" id="reg-ind-ic" step="0.1" min="0" placeholder="例: 3.0" class="reg-input"></div>
         <div class="form-group"><label class="form-label">用量</label><input type="text" id="reg-ind-dose" placeholder="例: 200mg/日" class="reg-input"></div>
       </div>
       <button class="btn btn-register" onclick="registerDrug('inducer')">&#x2795; 誘導薬として登録</button>
@@ -1000,49 +1003,49 @@
 // ==========================================
 const DB = {
   substrates: [
-    { name_ja: "シンバスタチン", name_en: "Simvastatin", cr: 1.00, cls: "VS" },
-    { name_ja: "ロバスタチン", name_en: "Lovastatin", cr: 1.00, cls: "VS" },
-    { name_ja: "ブスピロン", name_en: "Buspirone", cr: 0.99, cls: "VS" },
-    { name_ja: "ニソルジピン", name_en: "Nisoldipine", cr: 0.96, cls: "VS" },
-    { name_ja: "トリアゾラム", name_en: "Triazolam", cr: 0.93, cls: "VS" },
-    { name_ja: "ミダゾラム", name_en: "Midazolam", cr: 0.92, cls: "VS" },
-    { name_ja: "フェロジピン", name_en: "Felodipine", cr: 0.89, cls: "S" },
-    { name_ja: "シクロスポリン", name_en: "Cyclosporine", cr: 0.80, cls: "S" },
-    { name_ja: "ニフェジピン", name_en: "Nifedipine", cr: 0.78, cls: "SS" },
-    { name_ja: "アルプラゾラム", name_en: "Alprazolam", cr: 0.75, cls: "SS" },
-    { name_ja: "アトルバスタチン", name_en: "Atorvastatin", cr: 0.68, cls: "M" },
-    { name_ja: "テリスロマイシン", name_en: "Telithromycin", cr: 0.49, cls: "W" },
-    { name_ja: "ゾルピデム", name_en: "Zolpidem", cr: 0.40, cls: "W" },
-    { name_ja: "セリバスタチン", name_en: "Cerivastatin", cr: 0.18, cls: "VW" }
+    { name_ja: "シンバスタチン", name_en: "Simvastatin", brand: "リポバス", cr: 1.00, cls: "VS" },
+    { name_ja: "ロバスタチン", name_en: "Lovastatin", brand: "", cr: 1.00, cls: "VS" },
+    { name_ja: "ブスピロン", name_en: "Buspirone", brand: "", cr: 0.99, cls: "VS" },
+    { name_ja: "ニソルジピン", name_en: "Nisoldipine", brand: "バイミカード", cr: 0.96, cls: "VS" },
+    { name_ja: "トリアゾラム", name_en: "Triazolam", brand: "ハルシオン", cr: 0.93, cls: "VS" },
+    { name_ja: "ミダゾラム", name_en: "Midazolam", brand: "ドルミカム", cr: 0.92, cls: "VS" },
+    { name_ja: "フェロジピン", name_en: "Felodipine", brand: "スプレンジール", cr: 0.89, cls: "S" },
+    { name_ja: "シクロスポリン", name_en: "Cyclosporine", brand: "ネオーラル", cr: 0.80, cls: "S" },
+    { name_ja: "ニフェジピン", name_en: "Nifedipine", brand: "アダラート", cr: 0.78, cls: "SS" },
+    { name_ja: "アルプラゾラム", name_en: "Alprazolam", brand: "ソラナックス", cr: 0.75, cls: "SS" },
+    { name_ja: "アトルバスタチン", name_en: "Atorvastatin", brand: "リピトール", cr: 0.68, cls: "M" },
+    { name_ja: "テリスロマイシン", name_en: "Telithromycin", brand: "ケテック", cr: 0.49, cls: "W" },
+    { name_ja: "ゾルピデム", name_en: "Zolpidem", brand: "マイスリー", cr: 0.40, cls: "W" },
+    { name_ja: "セリバスタチン", name_en: "Cerivastatin", brand: "バイコール (販売中止)", cr: 0.18, cls: "VW" }
   ],
   inhibitors: [
-    { name_ja: "ケトコナゾール", name_en: "Ketoconazole", ir: 1.00, dose: "200-400mg", cls: "VS" },
-    { name_ja: "ボリコナゾール", name_en: "Voriconazole", ir: 0.98, dose: "400mg", cls: "VS" },
-    { name_ja: "イトラコナゾール", name_en: "Itraconazole", ir: 0.95, dose: "100-200mg", cls: "VS" },
-    { name_ja: "テリスロマイシン", name_en: "Telithromycin", ir: 0.91, dose: "800mg", cls: "VS" },
-    { name_ja: "クラリスロマイシン", name_en: "Clarithromycin", ir: 0.88, dose: "500-1000mg", cls: "S" },
-    { name_ja: "サキナビル", name_en: "Saquinavir", ir: 0.88, dose: "3600mg", cls: "S" },
-    { name_ja: "ネファゾドン", name_en: "Nefazodone", ir: 0.85, dose: "400mg", cls: "S" },
-    { name_ja: "エリスロマイシン", name_en: "Erythromycin", ir: 0.82, dose: "1000-2000mg", cls: "S" },
-    { name_ja: "ジルチアゼム", name_en: "Diltiazem", ir: 0.80, dose: "90-270mg", cls: "S" },
-    { name_ja: "フルコナゾール", name_en: "Fluconazole", ir: 0.79, dose: "200mg", cls: "SS" },
-    { name_ja: "ベラパミル", name_en: "Verapamil", ir: 0.71, dose: "240-480mg", cls: "SS" },
-    { name_ja: "シメチジン", name_en: "Cimetidine", ir: 0.44, dose: "800-1200mg", cls: "W" },
-    { name_ja: "ラニチジン", name_en: "Ranitidine", ir: 0.37, dose: "300-600mg", cls: "W" },
-    { name_ja: "ロキシスロマイシン", name_en: "Roxithromycin", ir: 0.35, dose: "300mg", cls: "W" },
-    { name_ja: "フルボキサミン", name_en: "Fluvoxamine", ir: 0.30, dose: "100-200mg", cls: "W" },
-    { name_ja: "アジスロマイシン", name_en: "Azithromycin", ir: 0.11, dose: "250-500mg", cls: "VW" },
-    { name_ja: "ガチフロキサシン", name_en: "Gatifloxacin", ir: 0.08, dose: "400mg", cls: "VW" },
-    { name_ja: "フルオキセチン", name_en: "Fluoxetine", ir: 0.00, dose: "20-60mg", cls: "VW" }
+    { name_ja: "ケトコナゾール", name_en: "Ketoconazole", brand: "ニゾラール (外用のみ)", ir: 1.00, dose: "200-400mg", cls: "VS" },
+    { name_ja: "ボリコナゾール", name_en: "Voriconazole", brand: "ブイフェンド", ir: 0.98, dose: "400mg", cls: "VS" },
+    { name_ja: "イトラコナゾール", name_en: "Itraconazole", brand: "イトリゾール", ir: 0.95, dose: "100-200mg", cls: "VS" },
+    { name_ja: "テリスロマイシン", name_en: "Telithromycin", brand: "ケテック", ir: 0.91, dose: "800mg", cls: "VS" },
+    { name_ja: "クラリスロマイシン", name_en: "Clarithromycin", brand: "クラリス／クラリシッド", ir: 0.88, dose: "500-1000mg", cls: "S" },
+    { name_ja: "サキナビル", name_en: "Saquinavir", brand: "インビラーゼ", ir: 0.88, dose: "3600mg", cls: "S" },
+    { name_ja: "ネファゾドン", name_en: "Nefazodone", brand: "", ir: 0.85, dose: "400mg", cls: "S" },
+    { name_ja: "エリスロマイシン", name_en: "Erythromycin", brand: "エリスロシン", ir: 0.82, dose: "1000-2000mg", cls: "S" },
+    { name_ja: "ジルチアゼム", name_en: "Diltiazem", brand: "ヘルベッサー", ir: 0.80, dose: "90-270mg", cls: "S" },
+    { name_ja: "フルコナゾール", name_en: "Fluconazole", brand: "ジフルカン", ir: 0.79, dose: "200mg", cls: "SS" },
+    { name_ja: "ベラパミル", name_en: "Verapamil", brand: "ワソラン", ir: 0.71, dose: "240-480mg", cls: "SS" },
+    { name_ja: "シメチジン", name_en: "Cimetidine", brand: "タガメット", ir: 0.44, dose: "800-1200mg", cls: "W" },
+    { name_ja: "ラニチジン", name_en: "Ranitidine", brand: "ザンタック (販売中止)", ir: 0.37, dose: "300-600mg", cls: "W" },
+    { name_ja: "ロキシスロマイシン", name_en: "Roxithromycin", brand: "ルリッド", ir: 0.35, dose: "300mg", cls: "W" },
+    { name_ja: "フルボキサミン", name_en: "Fluvoxamine", brand: "ルボックス／デプロメール", ir: 0.30, dose: "100-200mg", cls: "W" },
+    { name_ja: "アジスロマイシン", name_en: "Azithromycin", brand: "ジスロマック", ir: 0.11, dose: "250-500mg", cls: "VW" },
+    { name_ja: "ガチフロキサシン", name_en: "Gatifloxacin", brand: "ガチフロ (点眼のみ)", ir: 0.08, dose: "400mg", cls: "VW" },
+    { name_ja: "フルオキセチン", name_en: "Fluoxetine", brand: "", ir: 0.00, dose: "20-60mg", cls: "VW" }
   ],
   inducers: [
-    { name_ja: "リファンピシン", name_en: "Rifampicin", ic: 7.7, dose: "600mg/日" },
-    { name_ja: "フェニトイン", name_en: "Phenytoin", ic: 4.7, dose: "300-400mg/日" },
-    { name_ja: "カルバマゼピン", name_en: "Carbamazepine", ic: 3.0, dose: "200-600mg/日" },
-    { name_ja: "エファビレンツ", name_en: "Efavirenz", ic: 1.4, dose: "600mg/日" },
-    { name_ja: "セントジョーンズワート", name_en: "St. John's Wort", ic: 1.2, dose: "Hyperforin 10mg以上/日" },
-    { name_ja: "ボセンタン", name_en: "Bosentan", ic: 0.5, dose: "500mg/日" },
-    { name_ja: "ピオグリタゾン", name_en: "Pioglitazone", ic: 0.2, dose: "45mg/日" }
+    { name_ja: "リファンピシン", name_en: "Rifampicin", brand: "リファジン", ic: 7.7, dose: "600mg/日" },
+    { name_ja: "フェニトイン", name_en: "Phenytoin", brand: "アレビアチン／ヒダントール", ic: 4.7, dose: "300-400mg/日" },
+    { name_ja: "カルバマゼピン", name_en: "Carbamazepine", brand: "テグレトール", ic: 3.0, dose: "200-600mg/日" },
+    { name_ja: "エファビレンツ", name_en: "Efavirenz", brand: "ストックリン", ic: 1.4, dose: "600mg/日" },
+    { name_ja: "セントジョーンズワート", name_en: "St. John's Wort", brand: "(サプリメント)", ic: 1.2, dose: "Hyperforin 10mg以上/日" },
+    { name_ja: "ボセンタン", name_en: "Bosentan", brand: "トラクリア", ic: 0.5, dose: "500mg/日" },
+    { name_ja: "ピオグリタゾン", name_en: "Pioglitazone", brand: "アクトス", ic: 0.2, dose: "45mg/日" }
   ]
 };
 
@@ -1377,7 +1380,7 @@ function renderDrugTable() {
   const escapeHtml = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
   if (currentDbTab === 'substrates') {
-    html = `<thead><tr><th>#</th><th>薬物名</th><th>英名</th><th>CR</th><th>クラス</th><th></th></tr></thead><tbody>`;
+    html = `<thead><tr><th>#</th><th>一般名</th><th>英名</th><th>商品名</th><th>CR</th><th>クラス</th><th></th></tr></thead><tbody>`;
     DB.substrates.forEach((d, i) => {
       const badge = d.custom ? '<span class="custom-badge">登録</span>' : '';
       const del = d.custom ? `<button class="delete-btn" title="削除" onclick="deleteCustomDrug('substrates', ${i})">&#x1f5d1;</button>` : '';
@@ -1385,13 +1388,14 @@ function renderDrugTable() {
         <td>${i + 1}</td>
         <td>${escapeHtml(d.name_ja)}${badge}</td>
         <td>${escapeHtml(d.name_en)}</td>
+        <td>${d.brand ? escapeHtml(d.brand) : '<span style="color:#9ca3af">-</span>'}</td>
         <td class="value-cell">${d.cr.toFixed(2)}</td>
         <td><span class="class-badge class-${d.cls}">${d.cls} (${getClass(d.cr).label})</span></td>
         <td>${del}</td>
       </tr>`;
     });
   } else if (currentDbTab === 'inhibitors') {
-    html = `<thead><tr><th>#</th><th>薬物名</th><th>英名</th><th>IR</th><th>用量</th><th>クラス</th><th></th></tr></thead><tbody>`;
+    html = `<thead><tr><th>#</th><th>一般名</th><th>英名</th><th>商品名</th><th>IR</th><th>用量</th><th>クラス</th><th></th></tr></thead><tbody>`;
     DB.inhibitors.forEach((d, i) => {
       const badge = d.custom ? '<span class="custom-badge">登録</span>' : '';
       const del = d.custom ? `<button class="delete-btn" title="削除" onclick="deleteCustomDrug('inhibitors', ${i})">&#x1f5d1;</button>` : '';
@@ -1399,6 +1403,7 @@ function renderDrugTable() {
         <td>${i + 1}</td>
         <td>${escapeHtml(d.name_ja)}${badge}</td>
         <td>${escapeHtml(d.name_en)}</td>
+        <td>${d.brand ? escapeHtml(d.brand) : '<span style="color:#9ca3af">-</span>'}</td>
         <td class="value-cell">${d.ir.toFixed(2)}</td>
         <td>${escapeHtml(d.dose)}</td>
         <td><span class="class-badge class-${d.cls}">${d.cls} (${getClass(d.ir).label})</span></td>
@@ -1406,7 +1411,7 @@ function renderDrugTable() {
       </tr>`;
     });
   } else {
-    html = `<thead><tr><th>#</th><th>薬物名</th><th>英名</th><th>IC</th><th>用量</th><th></th></tr></thead><tbody>`;
+    html = `<thead><tr><th>#</th><th>一般名</th><th>英名</th><th>商品名</th><th>IC</th><th>用量</th><th></th></tr></thead><tbody>`;
     DB.inducers.forEach((d, i) => {
       const badge = d.custom ? '<span class="custom-badge">登録</span>' : '';
       const del = d.custom ? `<button class="delete-btn" title="削除" onclick="deleteCustomDrug('inducers', ${i})">&#x1f5d1;</button>` : '';
@@ -1414,6 +1419,7 @@ function renderDrugTable() {
         <td>${i + 1}</td>
         <td>${escapeHtml(d.name_ja)}${badge}</td>
         <td>${escapeHtml(d.name_en)}</td>
+        <td>${d.brand ? escapeHtml(d.brand) : '<span style="color:#9ca3af">-</span>'}</td>
         <td class="value-cell">${d.ic}</td>
         <td>${escapeHtml(d.dose)}</td>
         <td>${del}</td>
@@ -1475,46 +1481,48 @@ function registerDrug(type) {
   if (type === 'substrate') {
     const ja = document.getElementById('reg-sub-ja').value.trim();
     const en = document.getElementById('reg-sub-en').value.trim();
+    const brand = document.getElementById('reg-sub-brand').value.trim();
     const cr = parseFloat(document.getElementById('reg-sub-cr').value);
     if (!ja) { showRegMessage('薬物名（日本語）を入力してください', 'error'); return; }
     if (isNaN(cr) || cr < 0 || cr > 1) { showRegMessage('CR値は 0〜1 の範囲で入力してください', 'error'); return; }
     const cls = getClass(cr).key;
-    DB.substrates.push({ name_ja: ja, name_en: en || ja, cr, cls, custom: true });
-    document.getElementById('reg-sub-ja').value = '';
-    document.getElementById('reg-sub-en').value = '';
-    document.getElementById('reg-sub-cr').value = '';
+    DB.substrates.push({ name_ja: ja, name_en: en || ja, brand, cr, cls, custom: true });
+    ['reg-sub-ja','reg-sub-en','reg-sub-brand','reg-sub-cr'].forEach(id => document.getElementById(id).value = '');
     showRegMessage(`基質薬「${ja}」(CR=${cr}) を登録しました`, 'success');
   } else if (type === 'inhibitor') {
     const ja = document.getElementById('reg-inh-ja').value.trim();
     const en = document.getElementById('reg-inh-en').value.trim();
+    const brand = document.getElementById('reg-inh-brand').value.trim();
     const ir = parseFloat(document.getElementById('reg-inh-ir').value);
     const dose = document.getElementById('reg-inh-dose').value.trim() || '-';
     if (!ja) { showRegMessage('薬物名（日本語）を入力してください', 'error'); return; }
     if (isNaN(ir) || ir < 0 || ir > 1) { showRegMessage('IR値は 0〜1 の範囲で入力してください', 'error'); return; }
     const cls = getClass(ir).key;
-    DB.inhibitors.push({ name_ja: ja, name_en: en || ja, ir, dose, cls, custom: true });
-    document.getElementById('reg-inh-ja').value = '';
-    document.getElementById('reg-inh-en').value = '';
-    document.getElementById('reg-inh-ir').value = '';
-    document.getElementById('reg-inh-dose').value = '';
+    DB.inhibitors.push({ name_ja: ja, name_en: en || ja, brand, ir, dose, cls, custom: true });
+    ['reg-inh-ja','reg-inh-en','reg-inh-brand','reg-inh-ir','reg-inh-dose'].forEach(id => document.getElementById(id).value = '');
     showRegMessage(`阻害薬「${ja}」(IR=${ir}) を登録しました`, 'success');
   } else if (type === 'inducer') {
     const ja = document.getElementById('reg-ind-ja').value.trim();
     const en = document.getElementById('reg-ind-en').value.trim();
+    const brand = document.getElementById('reg-ind-brand').value.trim();
     const ic = parseFloat(document.getElementById('reg-ind-ic').value);
     const dose = document.getElementById('reg-ind-dose').value.trim() || '-';
     if (!ja) { showRegMessage('薬物名（日本語）を入力してください', 'error'); return; }
     if (isNaN(ic) || ic < 0) { showRegMessage('IC値は 0以上の数値で入力してください', 'error'); return; }
-    DB.inducers.push({ name_ja: ja, name_en: en || ja, ic, dose, custom: true });
-    document.getElementById('reg-ind-ja').value = '';
-    document.getElementById('reg-ind-en').value = '';
-    document.getElementById('reg-ind-ic').value = '';
-    document.getElementById('reg-ind-dose').value = '';
+    DB.inducers.push({ name_ja: ja, name_en: en || ja, brand, ic, dose, custom: true });
+    ['reg-ind-ja','reg-ind-en','reg-ind-brand','reg-ind-ic','reg-ind-dose'].forEach(id => document.getElementById(id).value = '');
     showRegMessage(`誘導薬「${ja}」(IC=${ic}) を登録しました`, 'success');
   }
+  sortDB();
   saveCustomDrugs();
   refreshAllDropdowns();
   renderDrugTable();
+}
+
+function sortDB() {
+  DB.substrates.sort((a, b) => b.cr - a.cr);
+  DB.inhibitors.sort((a, b) => b.ir - a.ir);
+  DB.inducers.sort((a, b) => b.ic - a.ic);
 }
 
 function deleteCustomDrug(type, index) {
@@ -1574,6 +1582,7 @@ function refreshAllDropdowns() {
 // Init
 // ==========================================
 loadCustomDrugs();
+sortDB();
 populateDropdowns();
 buildMatrix();
 renderDrugTable();
