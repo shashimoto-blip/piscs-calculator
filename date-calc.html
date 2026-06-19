@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>一包化 日付計算ツール</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #0f766e;
+      --primary-light: #14b8a6;
+      --primary-dark: #0d5c56;
+      --primary-bg: #f0fdfa;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --radius: 14px;
+      --shadow: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -4px rgba(0,0,0,.1);
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 50%, #f0f9ff 100%);
+      color: var(--gray-800);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding-bottom: 3rem;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+      color: white;
+      padding: 1.8rem 1.5rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: .02em; }
+    .header p { margin-top: .4rem; font-size: .85rem; opacity: .9; }
+
+    .container { max-width: 480px; margin: 0 auto; padding: 1.5rem 1rem 0; }
+
+    .card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .field { margin-bottom: 1.25rem; }
+    .field:last-child { margin-bottom: 0; }
+    label {
+      display: block;
+      font-weight: 700;
+      font-size: .9rem;
+      color: var(--gray-700);
+      margin-bottom: .5rem;
+    }
+    label .hint { font-weight: 400; font-size: .78rem; color: var(--gray-500); margin-left: .35rem; }
+
+    input[type="date"], input[type="number"] {
+      width: 100%;
+      padding: .85rem .9rem;
+      font-size: 1.1rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 10px;
+      background: var(--gray-100);
+      color: var(--gray-800);
+      transition: border-color .15s, background .15s;
+      -webkit-appearance: none;
+    }
+    input:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      background: #fff;
+    }
+
+    .days-row { display: flex; align-items: center; gap: .6rem; }
+    .days-row input { flex: 1; }
+    .days-row .unit { font-weight: 700; color: var(--gray-600); font-size: 1rem; }
+
+    .quick-days { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .65rem; }
+    .quick-days button {
+      flex: 1 1 auto;
+      min-width: 60px;
+      padding: .5rem .4rem;
+      font-size: .9rem;
+      font-weight: 700;
+      border: 2px solid var(--gray-200);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--gray-600);
+      cursor: pointer;
+      transition: all .12s;
+    }
+    .quick-days button:hover { border-color: var(--primary-light); color: var(--primary); }
+    .quick-days button.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+    .result-card {
+      background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 100%);
+      border: 2px solid var(--primary-light);
+    }
+    .result-label { font-size: .8rem; font-weight: 700; color: var(--primary); letter-spacing: .05em; }
+    .result-range {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      text-align: center;
+      margin: .6rem 0;
+      letter-spacing: .02em;
+    }
+    .result-meta {
+      text-align: center;
+      font-size: .85rem;
+      color: var(--gray-600);
+      margin-bottom: 1.1rem;
+    }
+    .result-meta strong { color: var(--gray-800); }
+
+    .output-box {
+      background: var(--gray-800);
+      color: #d1fae5;
+      border-radius: 10px;
+      padding: .9rem 1rem;
+      font-family: 'SF Mono', Menlo, Consolas, monospace;
+      font-size: 1.05rem;
+      white-space: pre-wrap;
+      word-break: break-all;
+      margin-bottom: .9rem;
+      line-height: 1.5;
+    }
+
+    .copy-btn {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.05rem;
+      font-weight: 800;
+      border: none;
+      border-radius: 10px;
+      background: var(--primary);
+      color: #fff;
+      cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+    .copy-btn:hover { background: var(--primary-dark); }
+    .copy-btn:active { transform: scale(.98); }
+    .copy-btn.copied { background: var(--success); }
+
+    .hidden { display: none; }
+    .footer { text-align: center; font-size: .75rem; color: var(--gray-500); margin-top: 1.5rem; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>📅 一包化 日付計算ツール</h1>
+    <p>開始日と処方日数から、お渡し日付を計算します</p>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <div class="field">
+        <label for="start">開始日 <span class="hint">（日付の切れ日の翌日）</span></label>
+        <input type="date" id="start">
+      </div>
+
+      <div class="field">
+        <label for="days">処方日数</label>
+        <div class="days-row">
+          <input type="number" id="days" inputmode="numeric" min="1" max="999" placeholder="例：45">
+          <span class="unit">日分</span>
+        </div>
+        <div class="quick-days" id="quickDays">
+          <button type="button" data-d="7">7日</button>
+          <button type="button" data-d="14">14日</button>
+          <button type="button" data-d="28">28日</button>
+          <button type="button" data-d="30">30日</button>
+          <button type="button" data-d="56">56日</button>
+          <button type="button" data-d="90">90日</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card result-card hidden" id="resultCard">
+      <div class="result-label">お渡し日付</div>
+      <div class="result-range" id="resultRange">–</div>
+      <div class="result-meta" id="resultMeta"></div>
+
+      <div class="output-box" id="outputBox"></div>
+      <button class="copy-btn" id="copyBtn">📋 コピーする</button>
+    </div>
+
+    <div class="footer">開始日を1日目として計算します</div>
+  </div>
+
+  <script>
+    const startEl = document.getElementById('start');
+    const daysEl = document.getElementById('days');
+    const quickWrap = document.getElementById('quickDays');
+    const resultCard = document.getElementById('resultCard');
+    const resultRange = document.getElementById('resultRange');
+    const resultMeta = document.getElementById('resultMeta');
+    const outputBox = document.getElementById('outputBox');
+    const copyBtn = document.getElementById('copyBtn');
+
+    // 開始日のデフォルトは今日
+    const today = new Date();
+    startEl.value = today.toISOString().slice(0, 10);
+
+    const fmt = d => `${d.getMonth() + 1}/${d.getDate()}`;
+    const WD = ['日', '月', '火', '水', '木', '金', '土'];
+
+    function calc() {
+      const days = parseInt(daysEl.value, 10);
+      if (!startEl.value || !days || days < 1) {
+        resultCard.classList.add('hidden');
+        return;
+      }
+
+      const start = new Date(startEl.value + 'T00:00:00');
+      const end = new Date(start);
+      end.setDate(end.getDate() + days - 1); // 開始日を1日目として数える
+
+      const range = `${fmt(start)}〜${fmt(end)}`;
+      resultRange.textContent = range;
+      resultMeta.innerHTML =
+        `<strong>${days}日分</strong>　/　` +
+        `${start.getMonth() + 1}月${start.getDate()}日(${WD[start.getDay()]}) 〜 ` +
+        `${end.getMonth() + 1}月${end.getDate()}日(${WD[end.getDay()]})`;
+
+      // 出力フォーマット
+      outputBox.textContent = `##O##\n${range}　`;
+      resultCard.classList.remove('hidden');
+
+      // クイックボタンのアクティブ表示
+      [...quickWrap.children].forEach(b =>
+        b.classList.toggle('active', parseInt(b.dataset.d, 10) === days));
+    }
+
+    quickWrap.addEventListener('click', e => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      daysEl.value = btn.dataset.d;
+      calc();
+    });
+
+    startEl.addEventListener('change', calc);
+    daysEl.addEventListener('input', calc);
+
+    copyBtn.addEventListener('click', async () => {
+      const text = outputBox.textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (e) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      copyBtn.textContent = '✅ コピーしました';
+      copyBtn.classList.add('copied');
+      setTimeout(() => {
+        copyBtn.textContent = '📋 コピーする';
+        copyBtn.classList.remove('copied');
+      }, 1600);
+    });
+  </script>
+</body>
+</html>
